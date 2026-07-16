@@ -1,0 +1,4 @@
+interface:
+  display_name: "SuperDev"
+  short_description: "Align architecture without unnecessary approval gates"
+  default_prompt: "Use $superdev to infer and align Current and Target Architecture, asking me only about material architectural forks before implementing."

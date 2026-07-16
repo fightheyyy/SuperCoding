@@ -1,0 +1,6 @@
+interface:
+  display_name: "SuperReview"
+  short_description: "Main-agent code review with atomic delegated repairs"
+  icon_small: "./assets/superreview-icon.png"
+  icon_large: "./assets/superreview-icon.svg"
+  default_prompt: "Use $superreview with GPT-5.6 Sol Ultra for the main review and the superreview-repair GPT-5.6 Sol Extra High agent for each confirmed atomic repair, then verify the final effective diff yourself."

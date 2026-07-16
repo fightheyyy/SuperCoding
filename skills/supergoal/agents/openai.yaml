@@ -1,0 +1,4 @@
+interface:
+  display_name: "SuperGoal"
+  short_description: "Run Codex as an acceptance-first goal orchestrator"
+  default_prompt: "Use $supergoal to make the main Codex agent act as dispatcher and acceptor first: write the parent Goal, pass a dispatch gate, spawn child Goal: contracts with create_goal/update_goal lifecycle, verify final acceptance, and send Feishu notice only if my original request explicitly asks for it."
