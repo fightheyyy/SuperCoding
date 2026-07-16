@@ -20,36 +20,31 @@ review judgment, finding quality, patch acceptance, final verification, and the
 final verdict with the main agent. Use subagents only as bounded repair workers
 after the main agent has confirmed actionable findings.
 
-## Model and Intelligence Policy
+## Main-Session and Repair-Worker Policy
 
-Enforce this role-specific model split before substantive review work:
+Use this role split before substantive review work:
 
-- Run the main reviewer on `gpt-5.6-sol` with **Ultra**. Use this profile for
-  task analysis, boundary discovery, the complete initial review, finding and
-  priority decisions, repair acceptance, final verification, and the verdict.
+- Run the main reviewer with the model and reasoning effort already active in
+  the current Codex session. Never inspect, request, require, verify, or switch
+  the main-session profile, and never pause review or repair because a main
+  model or reasoning level cannot be confirmed.
 - Run every repair worker through the `superreview-repair` custom agent on
   `gpt-5.6-sol` with **Extra High** reasoning (`model_reasoning_effort =
   "xhigh"`).
-- Do not let Ultra's proactive delegation bypass the ownership invariant. The
-  main agent must still finish the initial review and freeze findings before any
-  repair worker starts.
+- Do not let delegated repair bypass the ownership invariant. The main agent
+  must still finish the initial review and freeze findings before any repair
+  worker starts.
 
-Apply this model gate:
+Apply the repair-worker policy:
 
-1. Inspect the selected main-session model and intelligence level when the
-   surface exposes them.
-2. If the main session is not `gpt-5.6-sol` + Ultra, stop before Phase 1 and ask
-   the user to select that profile. If the surface cannot inspect or change the
-   selection, state `Main model policy unverified`; do not silently claim
-   compliance or begin repair mode.
-3. Before dispatch, require the named `superreview-repair` custom agent. Select
+1. Before dispatch, require the named `superreview-repair` custom agent. Select
    that profile explicitly when the spawn surface supports agent types or
    profiles.
-4. If the repair profile is unavailable or the spawn surface cannot select it,
+2. If the repair profile is unavailable or the spawn surface cannot select it,
    do not substitute a generic worker. Keep the confirmed findings report-only
    and report `Repair model policy blocked` with the missing capability.
-5. Let an explicit user model override win, but record the deviation in the
-   final report.
+3. Let an explicit user override for the repair worker win, but record the
+   deviation in the final report.
 
 The distributable repair profile lives at
 `agents/superreview-repair.toml`. Install it as
@@ -258,8 +253,8 @@ Lead with the verdict, then report:
 - Findings by priority, each with status and tight code references.
 - Repairs delegated, accepted, rejected, withdrawn, or blocked.
 - Verification commands and outcomes.
-- Model-policy evidence for the main reviewer and repair workers, including any
-  unverified or user-overridden selection.
+- Repair-worker profile evidence, including any unavailable, fallback, or
+  user-overridden selection. Do not report or verify the main-session model.
 - Residual risks, missing context, and unrun checks.
 - Publication state: local only, or the exact explicitly authorized GitHub/git
   actions completed.

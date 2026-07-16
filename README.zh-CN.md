@@ -114,8 +114,6 @@ SuperCoding/
 ├── scripts/
 │   ├── install.sh
 │   └── validate.sh
-├── SPEC.md
-├── PLAN.md
 └── README.md
 ```
 
@@ -125,7 +123,7 @@ SuperCoding/
 
 - 面向 Codex Skill 发现机制和仓库工作流。
 - SuperReview 修复模式还依赖仓库内附带的 `superreview-repair` 自定义代理。
-- Skill 内部的模型和推理档位策略只在当前 Codex 界面提供对应控制时生效。
+- 三套 Skill 的主会话一律沿用当前模型和推理档位，不设置模型门禁；只有委派的子代理或修复代理会在界面支持时使用独立模型配置。
 - 旧 SuperGoal macOS 辅助应用不属于这个统一仓库。
 - 三个原仓库继续保留源码历史；SuperCoding 是新的统一分发入口。
 

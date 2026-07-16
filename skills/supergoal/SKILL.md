@@ -77,15 +77,15 @@ Only after the dispatch gate may the parent agent implement locally, and then on
 
 Do not skip subagents merely because the task feels small. Read-only reconnaissance, independent verification, test strategy, risky-file inventory, and UI/manual smoke checks all count as valid subagent slices. If the parent does not launch a subagent, it must name the concrete skip reason before implementation.
 
-## Model Execution Policy
+## Main-Session and Child-Model Policy
 
-Use this model policy for every SuperGoal execution-mode run:
+Use this runtime policy for every SuperGoal execution-mode run:
 
-- Run the parent agent's initial task analysis, acceptance-metric design, parent Goal Contract drafting, dispatch planning, integration decisions, and final acceptance with `gpt-5.6-sol` at `ultra` reasoning effort.
-- Before analyzing the task, select or request `model: gpt-5.6-sol` and `reasoning_effort: ultra` for the parent when the host exposes parent-model controls. A skill cannot switch an already-running parent session by itself; when no parent-model control exists, state that limitation once, record the current parent model as a transparent fallback, and continue without pretending the switch happened.
+- Run all parent-agent work with the model and reasoning effort already active in the main Codex session.
+- Never inspect, request, require, verify, or switch the main-session model or reasoning level. Do not pause, block, downgrade, or add fallback ceremony because the host does not expose parent-model controls.
 - Spawn every child agent that performs discovery, implementation, review, or verification with the explicit overrides `model: gpt-5.6-sol` and `reasoning_effort: xhigh`. Treat `xhigh` as the tool value for the user's "extra high" requirement; do not pass `extrahigh`, which is not a valid spawn value.
 - Do not omit child model parameters and silently inherit the parent model. If the runtime rejects or does not support an override, record the requested model, requested effort, actual fallback, and reason in the dispatch ledger before accepting the child's evidence.
-- Do not delegate parent goal design merely to simulate the requested parent model. The main agent still owns task analysis, the parent Goal Contract, dispatch, integration, and acceptance.
+- Do not delegate parent goal design merely to obtain a different model. The main agent still owns task analysis, the parent Goal Contract, dispatch, integration, and acceptance.
 
 ## Parent-Agent Orchestration Model
 
@@ -178,21 +178,20 @@ If intent is mixed, prefer execution and keep the compiled Goal Contract interna
 
 When the user asks Codex to actually do the work, create or activate the goal and continue execution instead of returning a text prompt as the final artifact.
 
-Apply the Model Execution Policy before task analysis. The requested parent configuration is `gpt-5.6-sol` with `ultra`; child spawn overrides are `gpt-5.6-sol` with `xhigh`.
+Use the active main session as-is. Child spawn overrides remain `gpt-5.6-sol` with `xhigh` when the spawn surface supports them.
 
 Execute in this order:
 
-1. Apply and record the parent model preflight, including any host-level fallback.
-2. Draft observable acceptance metrics and stop conditions.
-3. Write a detailed parent Goal Contract from those metrics.
-4. Use the available goal-mode mechanism to start or update the parent goal, such as `create_goal` when that tool exists in the environment.
-5. Run a subagent opportunity scan and create a dispatch plan. Look for independent codebase reconnaissance, risky-file inventory, implementation slices with disjoint write sets, test strategy, regression search, release/docs checks, or UI verification.
-6. Complete the dispatch gate before implementation. If subagent tools are available and the scan finds at least one independent slice, the parent agent launches subagents before starting local implementation. Each spawn message must follow the Subagent Goal Lifecycle Protocol: start with `Goal:`, include the child Goal Contract, require the subagent to create/activate that child goal before work and mark it `complete` or `blocked` before returning, and use `model: gpt-5.6-sol` with `reasoning_effort: xhigh` in the spawn call.
-7. If no subagent is launched, state the reason briefly: no tool, no independent slice after scanning, unsafe write overlap, or user explicitly requested solo work. A small feature is not by itself a valid skip reason when read-only reconnaissance or independent verification would help.
-8. Continue the parent task while subagents run when there is non-overlapping work to do.
-9. The parent agent reviews subagent findings or patches, accepts/rejects/integrates them, updates the dispatch ledger, then runs final verification itself.
-10. If the user's original request explicitly asked for Feishu notification, send the final status message with `lark-cli im +messages-send` after final verification or after a blocked stop condition is reached.
-11. Stop only when the parent acceptance metrics are met, every accepted child goal has evidence of child-goal lifecycle completion and has met its child stop metrics, rejected or blocked child outputs have been resolved or recorded, the parent has personally verified final acceptance, and required notification has either been sent or recorded as blocked.
+1. Draft observable acceptance metrics and stop conditions.
+2. Write a detailed parent Goal Contract from those metrics.
+3. Use the available goal-mode mechanism to start or update the parent goal, such as `create_goal` when that tool exists in the environment.
+4. Run a subagent opportunity scan and create a dispatch plan. Look for independent codebase reconnaissance, risky-file inventory, implementation slices with disjoint write sets, test strategy, regression search, release/docs checks, or UI verification.
+5. Complete the dispatch gate before implementation. If subagent tools are available and the scan finds at least one independent slice, the parent agent launches subagents before starting local implementation. Each spawn message must follow the Subagent Goal Lifecycle Protocol: start with `Goal:`, include the child Goal Contract, require the subagent to create/activate that child goal before work and mark it `complete` or `blocked` before returning, and use `model: gpt-5.6-sol` with `reasoning_effort: xhigh` in the spawn call.
+6. If no subagent is launched, state the reason briefly: no tool, no independent slice after scanning, unsafe write overlap, or user explicitly requested solo work. A small feature is not by itself a valid skip reason when read-only reconnaissance or independent verification would help.
+7. Continue the parent task while subagents run when there is non-overlapping work to do.
+8. The parent agent reviews subagent findings or patches, accepts/rejects/integrates them, updates the dispatch ledger, then runs final verification itself.
+9. If the user's original request explicitly asked for Feishu notification, send the final status message with `lark-cli im +messages-send` after final verification or after a blocked stop condition is reached.
+10. Stop only when the parent acceptance metrics are met, every accepted child goal has evidence of child-goal lifecycle completion and has met its child stop metrics, rejected or blocked child outputs have been resolved or recorded, the parent has personally verified final acceptance, and required notification has either been sent or recorded as blocked.
 
 If goal tools or subagent tools are unavailable, say so briefly and continue with the closest safe fallback. Do not pretend a goal or subagent was started.
 
@@ -267,7 +266,7 @@ For broad tasks, first draft a compact contract with these fields. If the user o
 - `Assumptions`: conservative assumptions made because the request did not specify something.
 - `SuperDev Docs`: root and module `SPEC.md` / `PLAN.md` files that must be read or updated.
 - `Architecture Gate`: what must be true before production code changes begin.
-- `Model Execution Policy`: parent task analysis and acceptance on `gpt-5.6-sol` with `ultra`; every child spawn on `gpt-5.6-sol` with `xhigh`; transparent fallback evidence when the host cannot apply either setting.
+- `Runtime Policy`: use the active main session without a model gate; request `gpt-5.6-sol` with `xhigh` only for child spawns and record child-only fallback evidence when unsupported.
 - `Execution Phases`: inventory, docs gate, implementation, verification, doc sync, closeout.
 - `Anti-Complexity Rules`: constraints that prevent broad rewrites, new central systems, speculative abstractions, or accidental framework creation.
 - `Stop Conditions`: conditions that require pausing for user input instead of improvising.
@@ -293,7 +292,7 @@ For a reusable template, read `references/goal-contract-template.md`.
    - Prefer acceptance-driven phrasing: "Stop when X is true and verified", not "Do these steps".
    - Include explicit proof requirements before allowing file moves, abstractions, or broad cleanup.
    - In execution mode, start or update the active parent goal after drafting this contract when goal tools are available.
-   - Apply the parent model preflight before this analysis: request `gpt-5.6-sol` with `ultra`, or record that the host cannot switch the active parent session.
+   - Use the active main session as-is; do not add a parent-model preflight or model-based stop condition.
 
 3. Scan for and launch parent-owned subagent goals before implementation when parallelism is safe.
    - Treat subagents as the default for any independent discovery, verification, or disjoint implementation slice.

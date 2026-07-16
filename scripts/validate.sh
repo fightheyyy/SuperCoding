@@ -42,6 +42,14 @@ grep -q '^name = "superreview-repair"$' "$repair_agent"
 grep -q '^model = "gpt-5.6-sol"$' "$repair_agent"
 grep -q '^model_reasoning_effort = "xhigh"$' "$repair_agent"
 
+if command -v rg >/dev/null 2>&1; then
+  forbidden_main_gate='gpt-5\.6-sol.{0,100}ultra|ultra.{0,100}gpt-5\.6-sol|main session is not|main model policy unverified|apply and record the parent model preflight|requested parent configuration'
+  if rg -n -i "$forbidden_main_gate" "$ROOT_DIR/skills" --glob 'SKILL.md' --glob '*.md' --glob '*.yaml'; then
+    printf 'Found a forbidden main-session model gate.\n' >&2
+    exit 1
+  fi
+fi
+
 xmllint --noout "$ROOT_DIR/docs/hero.svg" "$ROOT_DIR/skills/superreview/assets/superreview-icon.svg"
 
 if [ -f "$VALIDATOR" ] && "$PYTHON_BIN" -c 'import yaml' >/dev/null 2>&1; then

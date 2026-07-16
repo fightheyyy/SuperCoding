@@ -121,8 +121,6 @@ SuperCoding/
 ├── scripts/
 │   ├── install.sh
 │   └── validate.sh
-├── SPEC.md
-├── PLAN.md
 └── README.zh-CN.md
 ```
 
@@ -132,7 +130,7 @@ Each directory under `skills/` is an independent Codex skill package with its ow
 
 - Built for Codex skill discovery and repository workflows.
 - SuperReview repair mode also requires the bundled `superreview-repair` custom agent.
-- Model and reasoning-level policies inside the skills apply only when the active Codex surface exposes those controls.
+- The three skills always use the active main-session model and reasoning setting without a model gate. Dedicated model profiles apply only to delegated child or repair workers when supported.
 - The legacy SuperGoal macOS helper app is intentionally outside this repository.
 - The three original repositories remain available as source history; this repository is the consolidated distribution surface.
 

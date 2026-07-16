@@ -16,7 +16,7 @@ Acceptance-first instruction:
 - Treat my request as the desired end state, not as a step-by-step implementation plan.
 - First define the observable acceptance metrics and stop conditions.
 - Then have the main Codex agent write and own the detailed parent Goal Contract from those metrics before editing code.
-- Run the main agent's task analysis, parent Goal Contract drafting, dispatch planning, integration, and final acceptance with `gpt-5.6-sol` at `ultra` reasoning effort. If the host cannot switch an already-running parent session, record that limitation and the actual fallback instead of pretending the switch happened.
+- Run the main agent with the model and reasoning effort already active in the current Codex session. Do not inspect, request, require, verify, or switch the main-session profile, and never pause because parent-model controls are unavailable.
 - The main agent's default role is dispatcher and acceptor, not direct implementer: define, dispatch, integrate, verify.
 - Before implementation, the main agent must pass the dispatch gate by scanning for independent discovery, implementation, and verification slices. If any exist and subagent tools are available, create and dispatch bounded child Goal Contracts to subagents.
 - Do not begin production implementation before the dispatch gate is complete, except for minimal context reads needed to write safe child goals.
@@ -56,9 +56,8 @@ Assumptions:
 - <conservative assumption made because the request did not specify it, or "None">
 
 Model execution policy:
-- Parent analysis and acceptance: `model: gpt-5.6-sol`, `reasoning_effort: ultra`.
+- Main session: use the active model and reasoning effort as-is; no model gate or preflight.
 - Child discovery, implementation, review, and verification: spawn with `model: gpt-5.6-sol`, `reasoning_effort: xhigh`.
-- Parent fallback: if the host exposes no parent-model switch for the active session, state and record the actual model/effort once, then continue.
 - Child fallback: if a spawn override is rejected or unavailable, record requested model/effort, actual fallback, and reason before accepting the child result.
 
 Feishu notification:
@@ -79,7 +78,7 @@ SuperDev architecture gate:
 - If target architecture is missing, stale, or inconsistent, update or propose docs before production implementation.
 
 Execution phases:
-1. Apply the parent model preflight: request `gpt-5.6-sol` with `ultra`, or record the host-level fallback.
+1. Use the active main session as-is; do not run a parent-model preflight.
 2. Translate the request into acceptance metrics and stop conditions.
 3. Have the main agent write and own the detailed parent Goal Contract from those metrics.
 4. Create or activate the parent goal when goal-mode tools are available.
@@ -179,7 +178,7 @@ Goal: Validate that $supergoal behaves as a parent-agent orchestrator
 Acceptance / stop metrics:
 - The transcript shows the parent agent produced or activated a parent Goal Contract.
 - The transcript shows a subagent opportunity scan.
-- The transcript shows the parent requested `gpt-5.6-sol` with `ultra` for task analysis or explicitly recorded that the active host could not switch the parent model.
+- The transcript shows no main-session model gate, profile-switch request, or model-based pause.
 - The transcript shows the parent agent did not begin production implementation before the dispatch gate, except for minimal context reads needed to write child goals.
 - At least one spawned subagent first message starts with `Goal:` and includes Parent Goal, Child Acceptance / Stop Metrics, Allowed Scope, Forbidden Work, Expected Output, Parent Merge Plan, and Goal Lifecycle Instruction.
 - Every spawned subagent call explicitly uses `model: gpt-5.6-sol` and `reasoning_effort: xhigh`, or records a concrete unsupported-override fallback.

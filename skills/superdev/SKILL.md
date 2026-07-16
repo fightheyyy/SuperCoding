@@ -16,6 +16,10 @@ Use spec / plan driven development for durable work:
 
 Small one-off utilities, copy edits, typo fixes, and local experiments do not need new module docs unless they become durable subsystems.
 
+## Main Session Runtime
+
+Use the model and reasoning effort already active in the main Codex session. Never inspect, request, require, verify, or switch the main-session profile, and never block implementation because a particular model or reasoning level cannot be confirmed. SuperDev gates work on architecture clarity, not model identity.
+
 ## Development Gate
 
 Before substantial code changes:
