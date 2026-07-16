@@ -2,11 +2,12 @@
 
 ## Current Status
 
-- Parent SuperGoal contract is active.
+- Publication and acceptance checks are complete.
 - The three upstream repositories, installed copies, and visual prototype have been inventoried.
 - The three authoritative skill packages have been assembled under `skills/` without semantic rewrites.
 - The installer, validator, English/Chinese READMEs, SVG hero, and 1280 x 640 PNG social preview are complete.
-- GitHub authentication is active for `fightheyyy`; `fightheyyy/SuperCoding` does not yet exist.
+- `fightheyyy/SuperCoding` is public on `main` with its description and 12 focused Topics applied.
+- Both the official multi-path Skill Installer and the repository installer pass from a fresh GitHub download.
 
 ## Milestones
 
@@ -16,14 +17,14 @@
 - Done: create the GitHub hero and social-preview assets.
 - Done: write English and Chinese README files plus the installer.
 - Done: validate isolated installation and skill metadata.
-- Pending: create and publish `fightheyyy/SuperCoding` with description and topics.
+- Done: create and publish `fightheyyy/SuperCoding` with description and topics.
+- Done: run post-publish installation and online README rendering checks.
 
 ## Next Steps
 
-1. Run an independent final repository audit.
-2. Commit the verified local repository.
-3. Create and push `fightheyyy/SuperCoding`.
-4. Apply description and topics, then run post-publish installation validation.
+1. Keep the three pinned skill snapshots synchronized intentionally rather than automatically.
+2. Upload `docs/social-preview.png` in GitHub repository settings if a custom link-sharing card is desired.
+3. Decide separately whether the three legacy repositories should be archived or redirected.
 
 ## Owners
 
@@ -54,6 +55,11 @@
 - Passed: repeated `--force` runs within the same second created unique, non-nested backups.
 - Passed: `scripts/validate.sh` structural and official-validator modes.
 - Passed: `docs/social-preview.png` is 1280 x 640 and 292 KiB; the hero was visually checked at 1280 x 640 and 640 x 320.
+- Passed: public repository is visible at `https://github.com/fightheyyy/SuperCoding` on default branch `main`.
+- Passed: repository description and all 12 intended Topics are present through the GitHub API.
+- Passed: official Skill Installer downloaded all three packages from GitHub and `quick_validate.py` passed 3/3.
+- Passed: a fresh remote clone installed all three skills and registered `superreview-repair.toml` in an isolated Codex home.
+- Passed: the live GitHub README renders the 1280 x 640 hero, its three instruments, central ASCII wordmark, and textual `SuperCoding` H1.
 
 ## Dispatch Ledger
 
@@ -68,7 +74,7 @@
 
 - SuperGoal's selected source is a published feature branch rather than its legacy `main`; the exact commit is pinned in `SPEC.md`.
 - The legacy repositories remain public and may diverge unless they are archived or redirected in a later task.
-- GitHub Social Preview upload may require a repository settings action after the PNG is published.
+- `docs/social-preview.png` is published and ready, but selecting it as GitHub's custom Social Preview remains an optional repository-settings action.
 
 ## Status Maintenance Rules
 

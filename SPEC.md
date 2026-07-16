@@ -27,17 +27,17 @@ flowchart LR
         D["Three-instrument visual system"]
     end
 
-    subgraph Repository["Local SuperCoding Repository"]
+    subgraph Repository["SuperCoding Repository"]
         E["Three self-contained skill directories"]
         F["Safe installer and validator"]
         G["English and Chinese README"]
         H["README hero and social preview"]
     end
 
-    subgraph Outputs["Verified Local Outputs"]
+    subgraph Outputs["Published Outputs"]
         I["Isolated three-skill installation"]
         J["Valid skill metadata and resources"]
-        K["Unpublished Git repository"]
+        K["Public fightheyyy/SuperCoding repository"]
     end
 
     A --> E
