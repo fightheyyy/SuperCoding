@@ -1,2 +1,6 @@
 .DS_Store
 *.backup-*
+
+# Local SuperDev working documents
+PLAN.md
+SPEC.md
