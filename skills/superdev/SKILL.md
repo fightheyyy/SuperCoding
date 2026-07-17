@@ -16,6 +16,20 @@ Use spec / plan driven development for durable work:
 
 Small one-off utilities, copy edits, typo fixes, and local experiments do not need new module docs unless they become durable subsystems.
 
+Maintenance and Git publication are separate decisions. Keep SuperDev documents local by default unless the repository deliberately uses them as shared documentation.
+
+## Git Publication Policy
+
+Treat `SPEC.md` and `PLAN.md` as local Agent working memory by default. SuperDev requires maintaining them; it does not require publishing them.
+
+- Do not stage, commit, or push newly created or untracked `SPEC.md` or `PLAN.md` files unless the user explicitly asks to publish them or the repository already treats them as shared architecture documentation.
+- In a Git worktree, add the exact untracked paths to `.git/info/exclude` by default. Prefer this local-only exclusion over changing the repository's shared `.gitignore`.
+- Before any commit or push, inspect `git status` and keep local SuperDev documents out of the staged set. Do not let broad staging commands decide whether they are published.
+- If a `SPEC.md` or `PLAN.md` is already tracked, continue maintaining it but do not include its changes in a commit by default and do not silently untrack it. Explain that ignore rules do not affect tracked files; use `git rm --cached` only when the user explicitly authorizes making the file local-only.
+- Explicit user instructions and established repository policy override this default.
+
+Tracking can be appropriate when these files are intentionally part of a team's architecture contract. Volatile execution plans should usually remain local, especially in public repositories.
+
 ## Main Session Runtime
 
 Use the model and reasoning effort already active in the main Codex session. Never inspect, request, require, verify, or switch the main-session profile, and never block implementation because a particular model or reasoning level cannot be confirmed. SuperDev gates work on architecture clarity, not model identity.
